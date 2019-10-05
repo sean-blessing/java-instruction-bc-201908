@@ -31,9 +31,13 @@ public class AccountBalanceCalculatorApp {
 			
 			choice = Console.getLine("Continue?");
 		}
-		// apply monthy payment and fee
+		// apply monthly payment and fee
 		sa.applyPaymentToBalance();
 		ca.subtractMonthlyFee();
+		
+		System.out.println("Monthly Payments and Fees:");
+		System.out.println("Checking Fee:              "+ ca.getMonthlyFee());
+		System.out.println("Savings Interest Payment:  "+ sa.getMonthlyInterestPayment());
 		
 		System.out.println("Final Balances:");
 		printAccountBalances(ca, sa);

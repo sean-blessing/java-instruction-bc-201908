@@ -6,6 +6,10 @@ public class CheckingAccount extends Account {
 		
 	}
 
+	public double getMonthlyFee() {
+		return monthlyFee;
+	}
+
 	public CheckingAccount(double balance, double monthlyFee) {
 		super(balance);
 		this.monthlyFee = monthlyFee;
