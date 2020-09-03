@@ -8,11 +8,11 @@ import db.UserDB;
 import util.Console;
 
 public class PRSConsoleApp {
+	private static UserDB udb = new UserDB();
 
 	public static void main(String[] args) {
 		System.out.println("Welcome to the PRS Console");
 		
-		UserDB udb = new UserDB();
 		int command = 0;
 		while (command != 99) {
 			command = Console.getInt(getMenuDisplay(),0,100);
@@ -59,9 +59,52 @@ public class PRSConsoleApp {
 				break;
 			case 4:
 				// update
+				// 1 - get the id of the user we want to update
+				System.out.println("Get a user:");
+				int uid = Console.getInt("User Id?: ");
+				// 2 - get the user for the id entered
+				u = getUser(uid);
+				if (u == null) {
+					// 3 - does the user exist?  if not, error
+					System.out.println("No user found for id: "+uid);
+				}
+				else {
+					// 4 - if user exists, prompt for new email address
+					String newEmail = Console.getString("New email address?: ");
+					// 5 - update the email address in user
+					u.setEmail(newEmail);
+					// 6 - update user
+					rowCount = udb.updateUser(u); 
+					if (rowCount==1) {
+						System.out.println("User updated.");
+					}
+					else {
+						System.out.println("Error updating user.");
+					}
+				}
 				break;
 			case 5:
 				// delete
+				// 1 - get the id of the user we want to delete
+				System.out.println("Get a user:");
+				uid = Console.getInt("User Id?: ");
+				// 2 - get the user for the id entered
+				u = getUser(uid);
+				if (u == null) {
+					// 3 - does the user exist?  if not, error
+					System.out.println("No user found for id: "+uid);
+				}
+				else {
+					// 4 - delete user
+					rowCount = udb.deleteUser(u); 
+					if (rowCount==1) {
+						System.out.println("User deleted.");
+					}
+					else {
+						System.out.println("Error deleting user.");
+					}
+				}
+
 				break;
 			case 99:
 				// exit
@@ -86,6 +129,17 @@ public class PRSConsoleApp {
 					 "99 - Exit\n"+
 					 "Command: ";
 		return str;
+	}
+	
+	private static User getUser(int id) {
+		User u = null;
+		try {
+			u = udb.get(id);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return u;
+		
 	}
 
 }

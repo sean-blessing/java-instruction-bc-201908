@@ -70,6 +70,36 @@ public class UserDB {
 		return rowCount;
 	}
 	
+	// change the email address only
+	public int updateUser(User u) {
+		int rowCount = 0;
+		String sql = "update user set Email = ? "+
+					 "where id = ?";
+		try (PreparedStatement ps = getConnection().
+				prepareStatement(sql)){
+			ps.setString(1, u.getEmail());
+			ps.setInt(2, u.getId());
+			rowCount = ps.executeUpdate();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rowCount;
+	}
+	
+	public int deleteUser(User u) {
+		int rowCount = 0;
+		String sql = "delete from user "+
+					 "where id = ?";
+		try (PreparedStatement ps = getConnection().
+				prepareStatement(sql)){
+			ps.setInt(1, u.getId());
+			rowCount = ps.executeUpdate();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rowCount;
+	}
+	
 	private User createUserFromResultSet(ResultSet rs) throws SQLException {
 		// parse user row into user pojo
 		int id = rs.getInt("ID");
